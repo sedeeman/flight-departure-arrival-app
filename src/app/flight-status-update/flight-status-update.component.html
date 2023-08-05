@@ -1,0 +1,35 @@
+<div mat-dialog-title>
+  <h1>Update Flight Status</h1>
+</div>
+<form [formGroup]="flightStatusUpdateForm" (ngSubmit)="onFormSubmit()">
+  <div mat-dialog-content class="content">
+    <div class="row">
+      <mat-form-field appearance="outline">
+        <mat-label>Flight Number</mat-label>
+        <input matInput type="text" placeholder="Ex. BOEING001" formControlName="flightNumber" required/>
+      </mat-form-field>
+    </div>
+
+    <br />
+
+    <div class="row">
+      <mat-form-field appearance="outline">
+        <mat-label>Status</mat-label>
+        <mat-select formControlName="status">
+          <mat-option *ngFor="let val of flightStatus" [value]="val"
+            >{{ val }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+  </div>
+  <div mat-dialog-actions class="action">
+    <button mat-raised-button type="button" [mat-dialog-close]="false">
+      Cancel
+    </button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="!flightStatusUpdateForm.valid">
+      Update
+    </button>
+  </div>
+</form>

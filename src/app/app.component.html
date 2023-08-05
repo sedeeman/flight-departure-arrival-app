@@ -1,0 +1,80 @@
+<!--Header => add,subscribe,download functions-->
+<mat-toolbar color="primary" class="app-component">
+  <span>Flight Inbound Outbound App</span>
+  <span class="button-spacer"></span>
+  <button mat-raised-button (click)="openFlightAddForm()">
+    ADD Flight
+  </button>
+  <button mat-raised-button (click)="openFlightSubscribeForm()">
+    Subscribe
+  </button>
+  <button mat-raised-button (click)="startDownload()">
+    Download
+  </button>
+</mat-toolbar>
+
+
+<!--Body => display flight data and update flight status-->
+<div class="main-body">
+
+  <mat-form-field>
+    <mat-label>Filter</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Boeing 737" #input>
+  </mat-form-field>
+
+  <div class="table-container">
+    <table mat-table [dataSource]="dataSource" matSort>
+
+      <ng-container matColumnDef="flightNumber">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Flight Number </th>
+        <td mat-cell *matCellDef="let row"> {{row.flightNumber}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="scheduledTime">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Schedule Time </th>
+        <td mat-cell *matCellDef="let row"> {{ row.scheduledTime | date:'medium' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="flightType">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Flight Type </th>
+        <td mat-cell *matCellDef="let row"> {{row.flightType}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="airportCode">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Airport </th>
+        <td mat-cell *matCellDef="let row"> {{ row.airportCode }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="location">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Location </th>
+        <td mat-cell *matCellDef="let row"> {{row.location}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+        <td mat-cell *matCellDef="let row"> {{row.status}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Update Status </th>
+        <td mat-cell *matCellDef="let row">
+          <button mat-icon-button color="primary" (click)="openFlightEditForm(row)">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns; let entry"
+        [ngClass]="{ 'highlight': entry.delayed === true }"></tr>
+
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+      </tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="defaultPageSize"
+      aria-label="Select page of users"></mat-paginator>
+  </div>
+
+</div>

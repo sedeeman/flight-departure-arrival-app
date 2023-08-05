@@ -1,0 +1,47 @@
+<div mat-dialog-title>
+  <h1>Subscribe to Flight Status</h1>
+</div>
+<form [formGroup]="subscribeToFlightStatusForm" (ngSubmit)="onFormSubmit()">
+  <div mat-dialog-content class="content">
+    <div class="row">
+      <mat-form-field appearance="outline">
+        <mat-label>Flight Number</mat-label>
+        <input matInput type="text" placeholder="Ex. BOEING001" formControlName="flightNumber" required />
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input matInput type="text" placeholder="Ex. BOEING001" formControlName="email" required />
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-checkbox formControlName="subscribeToArrival">
+        Subsceibe to arrival
+      </mat-checkbox>
+    </div>
+
+    <div class="row">
+      <mat-checkbox formControlName="subscribeToDeparture">
+        Subsceibe to departure
+      </mat-checkbox>
+    </div>
+
+    <div class="row">
+      <mat-checkbox formControlName="subscribeToDelay">
+        Subscribe to delay
+      </mat-checkbox>
+    </div>
+
+  </div>
+  <div mat-dialog-actions class="action">
+    <button mat-raised-button type="button" [mat-dialog-close]="false">
+      Cancel
+    </button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="!subscribeToFlightStatusForm.valid">
+      Subscribe
+    </button>
+  </div>
+</form>

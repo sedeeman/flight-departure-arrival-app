@@ -1,0 +1,52 @@
+<div mat-dialog-title>
+  <h1>Flight Form</h1>
+</div>
+<form [formGroup]="flightForm" (ngSubmit)="onFormSubmit()">
+  <div mat-dialog-content class="content">
+    <div class="row">
+      <mat-form-field appearance="outline">
+        <mat-label>Flight Number</mat-label>
+        <input matInput type="text" placeholder="Ex. BOEING001" formControlName="flightNumber" required />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Airport Code</mat-label>
+        <input matInput placeholder="Ex. YVR3" formControlName="airportCode" required />
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field appearance="outline">
+        <mat-label>Schedule Time</mat-label>
+        <input matInput type="datetime-local" placeholder="date & time" formControlName="scheduledTime" required />
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-radio-group aria-label="Select an option" formControlName="flightType" required>
+        <mat-label><b>Flight Type</b></mat-label>
+        <mat-radio-button value="INBOUND">Inbound</mat-radio-button>
+        <mat-radio-button value="OUTBOUND">Outbound</mat-radio-button>
+      </mat-radio-group>
+    </div>
+    <div class="row">
+      <mat-form-field appearance="outline">
+        <mat-label>Airport Name</mat-label>
+        <input matInput placeholder="Ex. Vancourer International Airport" formControlName="airportName" required />
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field appearance="outline">
+        <mat-label>Location</mat-label>
+        <input matInput placeholder="Ex. Vancourer,BC" formControlName="location" required />
+      </mat-form-field>
+    </div>
+  </div>
+  <div mat-dialog-actions class="action">
+    <button mat-raised-button type="button" [mat-dialog-close]="false">
+      Cancel
+    </button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="!flightForm.valid">
+      Save
+    </button>
+  </div>
+</form>
