@@ -2,7 +2,13 @@
 # Flight Arrival Departure App
 The Flight Arrival Departure App is a web application that facilitates various functionalities related to flight management, subscriptions, and notifications. The application allows users to view all flight data, with delay flights highlighted for easy identification. Users can subscribe to their preferred flight status (delay, arrival, departure) and receive email notifications based on their subscription preferences. On the admin side, users with appropriate permissions can add new flights, update flight statuses (arrival, departure, delay), and download flight data.
 
-# Features
+
+### High Level Design
+
+![image](https://github.com/sedeeman/flight-departure-arrival-app/assets/119731054/dbb66c2b-697e-455e-a94a-05879fa1600a)
+
+
+### Features
 
 1. View All Flight Data: Users can view all flight data, and delayed flights are highlighted to stand out.
 
@@ -18,29 +24,24 @@ The Flight Arrival Departure App is a web application that facilitates various f
 
 7. Download Flight Data: Admin users can download flight data for further analysis.
 
-# Installation and Usage
+### Installation and Usage
 
-# Prerequisites
+### Prerequisites
 Before running the Flight Arrival Departure App, you need to have the following software installed on your system:
 
 1. Node.js (https://nodejs.org)
 2. Angular CLI (https://angular.io/cli)
-3. Backend Server (assuming it's already set up and running at http://localhost:3000 and http://localhost:3001 for flights and flight status APIs respectively)
+3. Backend Server (assuming it's already set up and running at http://localhost:3000 and http://localhost:3001 for flight-service and flight-notification service APIs respectively)
 
-# Installation
+### Installation
 
 ### Clone the repository to your local machine:
-git clone https://github.com/yourusername/FlightArrivalDepartureApp.git
-cd FlightArrivalDepartureApp
+git clone [flight-departure-arrival-app](https://github.com/sedeeman/flight-departure-arrival-app).git
+cd flight-departure-arrival-app
 
-### nstall the dependencies:
-npm install
-Configuration
+https://github.com/sedeeman/flight-departure-arrival-app/edit/main/README.md
 
-Backend URL: In the src/app/services/flight.service.ts file, update the API URLs in the FlightService to point to the backend server:
-typescript
-
-### backend servers
+### Backend servers
 private readonly flightsApiUrl = 'http://localhost:3000/api/flights';
 private readonly flightStatusApiUrl = 'http://localhost:3001/api/flights/flight-status';
 private readonly flightSubscribeApiUrl = 'http://localhost:3001/api/flights/subscribe';
