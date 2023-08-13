@@ -7,6 +7,9 @@ import { FlightService } from './services/flight.service';
 import { FlightAddComponent } from './flight-add/flight-add.component';
 import { FlightStatusUpdateComponent } from './flight-status-update/flight-status-update.component';
 import { FlightStatusSubscribeComponent } from './flight-status-subscribe/flight-status-subscribe.component';
+import { FlightSearchComponent } from './flight-search/flight-search.component';
+import { KeycloakService } from 'keycloak-angular';
+import { ExportService } from './services/export.service';
 
 @Component({
   selector: 'app-root',
@@ -14,27 +17,39 @@ import { FlightStatusSubscribeComponent } from './flight-status-subscribe/flight
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
+  public hasAdminRole: boolean = false;
   title: string = 'flight-arrival-departure-app';
   defaultPageSize: number = 20;
   displayedColumns: string[] = [
     'flightNumber',
-    'scheduledTime',
+    'originLocation',
+    'destinationLocation',
     'flightType',
-    'airportCode',
-    'location',
+    'terminalGate',
+    'arrivalTime',
+    'departureTime',
     'status',
-    'action',
   ];
-  dataSource!: MatTableDataSource<any>;
 
+  dataSource!: MatTableDataSource<any>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private _dialog: MatDialog, private _flightService: FlightService) {}
+  constructor(
+    private readonly _keycloak: KeycloakService,
+    private _exportService: ExportService,
+    private _dialog: MatDialog,
+    private _flightService: FlightService
+  ) {}
 
   ngOnInit(): void {
+    this.hasAdminRole = this._keycloak.getUserRoles().includes('admin');
     this.getAllFlights();
   }
+
+  public async logout() {
+    this._keycloak.logout();
+ }
 
   openFlightAddForm() {
     const dialogRef = this._dialog.open(FlightAddComponent);
@@ -73,9 +88,23 @@ export class AppComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe({
       next: (val) => {
-        console.log(val);
+        this.getAllFlights();
       },
       error: console.log,
+    });
+  }
+
+  openFlightSearchForm(): void {
+    const dialogRef = this._dialog.open(FlightSearchComponent);
+    dialogRef.afterClosed().subscribe({
+      next: (val) => {
+        if (val != null && val.data.length > 0) {
+          // Set search results
+          this.dataSource = new MatTableDataSource(val.data);
+          this.dataSource.sort = this.sort;
+          this.dataSource.paginator = this.paginator;
+        }
+      },
     });
   }
 
@@ -89,8 +118,8 @@ export class AppComponent implements OnInit {
     });
   }
 
-  startDownload(){
-    this._flightService.downloadFlightData();
+  exportToCsv(): void {
+    this._exportService.exportToCsv(this.dataSource.data, 'flight-data', ['flightId', 'flightNumber', 'originLocation', 'destinationLocation','flightType','terminalGate','arrivalTime','departureTime','status','delayed']);
   }
 
 }

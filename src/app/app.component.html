@@ -1,26 +1,32 @@
 <!--Header => add,subscribe,download functions-->
 <mat-toolbar color="primary" class="app-component">
-  <span>Flight Inbound Outbound App</span>
+  <span>Flight Dashboard</span>
   <span class="button-spacer"></span>
-  <button mat-raised-button (click)="openFlightAddForm()">
+  <button *ngIf="hasAdminRole" mat-raised-button (click)="openFlightAddForm()">
     ADD Flight
   </button>
   <button mat-raised-button (click)="openFlightSubscribeForm()">
     Subscribe
   </button>
-  <button mat-raised-button (click)="startDownload()">
+  <button *ngIf="hasAdminRole" mat-raised-button (click)="exportToCsv()">
     Download
   </button>
+  <button mat-icon-button color="default" matSuffix
+        (click)="logout()"><mat-icon>logout</mat-icon></button>
 </mat-toolbar>
 
 
 <!--Body => display flight data and update flight status-->
 <div class="main-body">
 
-  <mat-form-field>
-    <mat-label>Filter</mat-label>
-    <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Boeing 737" #input>
-  </mat-form-field>
+  <p>
+    <mat-form-field appearance="outline">
+      <mat-label>Filter</mat-label>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Boeing 737" #input>
+      <button mat-icon-button color="primary" matSuffix
+        (click)="openFlightSearchForm()"><mat-icon>menu</mat-icon></button>
+    </mat-form-field>
+  </p>
 
   <div class="table-container">
     <table mat-table [dataSource]="dataSource" matSort>
@@ -30,43 +36,47 @@
         <td mat-cell *matCellDef="let row"> {{row.flightNumber}}</td>
       </ng-container>
 
-      <ng-container matColumnDef="scheduledTime">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Schedule Time </th>
-        <td mat-cell *matCellDef="let row"> {{ row.scheduledTime | date:'medium' }}</td>
+      <ng-container matColumnDef="originLocation">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Origin </th>
+        <td mat-cell *matCellDef="let row"> {{row.originLocation}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="destinationLocation">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Destination </th>
+        <td mat-cell *matCellDef="let row"> {{row.destinationLocation}}</td>
       </ng-container>
 
       <ng-container matColumnDef="flightType">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Flight Type </th>
-        <td mat-cell *matCellDef="let row"> {{row.flightType}}</td>
+        <td mat-cell *matCellDef="let row"> {{ row.flightType }}</td>
       </ng-container>
 
-      <ng-container matColumnDef="airportCode">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Airport </th>
-        <td mat-cell *matCellDef="let row"> {{ row.airportCode }}</td>
+      <ng-container matColumnDef="terminalGate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Terminal </th>
+        <td mat-cell *matCellDef="let row"> {{row.terminalGate}}</td>
       </ng-container>
 
-      <ng-container matColumnDef="location">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Location </th>
-        <td mat-cell *matCellDef="let row"> {{row.location}}</td>
+      <ng-container matColumnDef="arrivalTime">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Arrival Time </th>
+        <td mat-cell *matCellDef="let row"> {{ row.arrivalTime | date:'medium' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="departureTime">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Departure Time </th>
+        <td mat-cell *matCellDef="let row"> {{ row.departureTime | date:'medium' }}</td>
       </ng-container>
 
       <ng-container matColumnDef="status">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
-        <td mat-cell *matCellDef="let row"> {{row.status}}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="action">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Update Status </th>
         <td mat-cell *matCellDef="let row">
-          <button mat-icon-button color="primary" (click)="openFlightEditForm(row)">
-            <mat-icon>edit</mat-icon>
-          </button>
+          <button *ngIf="hasAdminRole" mat-icon-button color="primary" (click)="openFlightEditForm(row)"><mat-icon>edit</mat-icon></button>
+          {{row.status}}
         </td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns; let entry"
-        [ngClass]="{ 'highlight': entry.delayed === true }"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{ 'highlight': row.delayed === true }">
+      </tr>
 
       <tr class="mat-row" *matNoDataRow>
         <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>

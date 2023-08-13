@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -26,9 +26,29 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatListModule} from '@angular/material/list';
 import { FlightStatusSubscribeComponent } from './flight-status-subscribe/flight-status-subscribe.component';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import { FlightSearchComponent } from './flight-search/flight-search.component';
+import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
+import { ExportService } from './services/export.service';
+
+
+export function initializeKeycloak(keycloak: KeycloakService) {
+  return () =>
+  keycloak.init({
+    config: {
+    url: 'http://localhost:8180',
+    realm: 'flight-web-app',
+    clientId: 'frontend'
+    },
+  initOptions: {
+  onLoad: 'login-required',
+  silentCheckSsoRedirectUri:
+    window.location.origin + '/assets/silent-check-sso.html'
+  }
+  });
+}
 
 @NgModule({
-  declarations: [AppComponent, FlightAddComponent, FlightStatusUpdateComponent, FlightStatusSubscribeComponent],
+  declarations: [AppComponent, FlightAddComponent, FlightStatusUpdateComponent, FlightStatusSubscribeComponent, FlightSearchComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -54,9 +74,18 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     MatFormFieldModule,
     MatSidenavModule,
     MatListModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    KeycloakAngularModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeKeycloak,
+      multi: true,
+      deps: [KeycloakService],
+    },
+    ExportService
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -22,7 +22,8 @@ The Flight Arrival Departure App is a web application that facilitates various f
 
 6. Update Flight Status: Admin users can update flight statuses such as arrival, departure, and delay.
 
-7. Download Flight Data: Admin users can download flight data for further analysis.
+7. Download Flight Data: Admin users can download flight data for further analysis. (Currently support .CSV format)
+
 
 ### Installation and Usage
 
@@ -49,9 +50,31 @@ private readonly flightSubscribeApiUrl = 'http://localhost:3001/api/flights/subs
 ### ng serve
 The app will be accessible at http://localhost:4200.
 
+### App Sign-In Process and Test Account Usage
+
+When signing in to the application, users will be redirected to the Keycloak Authorization Server's Single Sign-On (SSO) page. Below are the test accounts that can be used for both user and admin roles:
+
+### Admin Account:
+Username: selan
+Password: selan
+
+### User Account:
+Username: deemantha
+Password: deemantha
+
+### Admin Role Features
+Add Flights
+Download Flight Data to .CSV file
+Update Flight Status
+View Flight Data
+Subscribe to Flight Status Updates
+
+### User Role Features
+View Flight Data
+Subscribe to Flight Status Updates
+
+Feel free to use these test accounts to explore and interact with the various features available to both admin and user roles in the application.             
+
 ### Unit Testing
 ng test
 This will execute the unit tests using Karma.
-
-### Additional Features (Todo)
-Fine-Grained Permission-Based Authentication: Implement fine-grained permission-based authentication to control access to admin functionalities based on user roles and permissions.

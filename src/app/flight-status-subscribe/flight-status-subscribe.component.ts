@@ -12,8 +12,6 @@ import { FlightService } from '../services/flight.service';
 export class FlightStatusSubscribeComponent {
   subscribeToFlightStatusForm: FormGroup;
 
-  flightStatus: string[] = ['arrival', 'departure', 'delay'];
-
   constructor(
     private _formBuilder: FormBuilder,
     private _flightService: FlightService,
@@ -40,7 +38,7 @@ export class FlightStatusSubscribeComponent {
         .subscribeToFlightStatus(this.subscribeToFlightStatusForm.value)
         .subscribe({
           next: (val: any) => {
-            this._coreService.openSnackBar('Subscribed to flight status!');
+            this._coreService.openSnackBar('Subscribed to flight status updates!');
             this._dialogRef.close(true);
           },
           error: (err: any) => {

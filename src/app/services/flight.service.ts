@@ -9,55 +9,55 @@ export class FlightService {
   constructor(private _http: HttpClient) {}
 
   getAllFlights(): Observable<any> {
-    return this._http.get('http://localhost:3000/api/flights');
+    return this._http.get('http://localhost:3000/api/flight-service');
   }
 
-  searchFlightData(): Observable<any> {
-    return this._http.get('http://localhost:3000/api/flights/search');
+  searchFlightData(data:any): Observable<any> {
+    return this._http.get(this.createSearchUri(data));
   }
 
   addFlight(data: any): Observable<any> {
-    return this._http.post('http://localhost:3000/api/flights', data);
+    return this._http.post('http://localhost:3000/api/flight-service', data);
   }
 
-  updateFlightStatus(data: any): Observable<any> {
-    return this._http.post(
-      `http://localhost:3001/api/flights/flight-status`,
+  updateFlightStatus(data: any,id:number): Observable<any> {
+    return this._http.patch(
+      `http://localhost:3000/api/flight-service/${id}`,
       data
     );
   }
 
   subscribeToFlightStatus(data: any): Observable<any> {
-    return this._http.post(`http://localhost:3001/api/flights/subscribe`, data);
+    return this._http.post(`http://localhost:3001/api/flight-notification-service/subscribe`, data);
   }
 
-  downloadFlightData(): Observable<HttpResponse<Blob>> {
-    return this._http
-      .get('http://localhost:3000/api/flights/download', {
-        responseType: 'blob',
-        observe: 'response',
-      })
-      .pipe(
-        tap((response: HttpResponse<Blob>) => {
-          this.downloadFile(response);
-        })
-      );
+  private createSearchUri(data:any){
+
+    const queryParams = [];
+    if (data.flightNumber) {
+      queryParams.push(`flightNumber=${data.flightNumber}`);
+    }
+    if (data.status) {
+      queryParams.push(`status=${data.status}`);
+    }
+    if (data.flightType) {
+      queryParams.push(`flightType=${data.flightType}`);
+    }
+    if (data.originLocation) {
+      queryParams.push(`originLocation=${data.originLocation}`);
+    }
+    if (data.destinationLocation) {
+      queryParams.push(`destinationLocation=${data.destinationLocation}`);
+    }
+    if (data.terminalGate) {
+      queryParams.push(`terminalGate=${data.terminalGate}`);
+    }
+
+    const queryParamString = queryParams.join('&');
+    const uri = `http://localhost:3000/api/flight-service/search?${queryParamString}`;
+
+    return uri;
   }
 
-  private downloadFile(response: HttpResponse<Blob>) {
-    const anchor = document.createElement('a');
-    const blob = new Blob([response.body!], {
-      type: 'application/octet-stream',
-    });
 
-    const downloadUrl = URL.createObjectURL(blob);
-    anchor.href = downloadUrl;
-    anchor.download = 'flight_data.csv';
-
-    document.body.appendChild(anchor);
-    anchor.click();
-
-    URL.revokeObjectURL(downloadUrl);
-    document.body.removeChild(anchor);
-  }
 }

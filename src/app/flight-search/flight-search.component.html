@@ -1,22 +1,22 @@
 <div mat-dialog-title>
-  <h1>Flight Form</h1>
+  <h1>Advanced Search</h1>
 </div>
-<form [formGroup]="flightForm" (ngSubmit)="onFormSubmit()">
+<form [formGroup]="flightSearchForm" (ngSubmit)="onSearchFormSubmit()">
   <div mat-dialog-content class="content">
 
     <div class="row">
       <mat-form-field appearance="outline">
         <mat-label>Flight Number</mat-label>
-        <input matInput type="text" placeholder="Ex. BOEING001" formControlName="flightNumber" required />
+        <input matInput type="text" placeholder="Ex. BOEING001" formControlName="flightNumber"/>
       </mat-form-field>
       <mat-form-field appearance="outline">
         <mat-label>Terminal Gate</mat-label>
-        <input matInput placeholder="Ex. A6" formControlName="terminalGate" required />
+        <input matInput placeholder="Ex. A6" formControlName="terminalGate" />
       </mat-form-field>
     </div>
 
     <div class="row">
-      <mat-radio-group aria-label="Select an option" formControlName="flightType" required>
+      <mat-radio-group aria-label="Select an option" formControlName="flightType">
         <mat-label><b>Flight Type</b></mat-label>
         <mat-radio-button value="INBOUND">Inbound</mat-radio-button>
         <mat-radio-button value="OUTBOUND">Outbound</mat-radio-button>
@@ -26,22 +26,11 @@
     <div class="row">
       <mat-form-field appearance="outline">
         <mat-label>Origin Location</mat-label>
-        <input matInput placeholder="Ex. Vancourer" formControlName="originLocation" required />
+        <input matInput placeholder="Ex. Vancourer" formControlName="originLocation" />
       </mat-form-field>
       <mat-form-field appearance="outline">
         <mat-label>Destination Location</mat-label>
-        <input matInput placeholder="Ex. Toronto" formControlName="destinationLocation" required />
-      </mat-form-field>
-    </div>
-
-    <div class="row">
-      <mat-form-field appearance="outline">
-        <mat-label>Arrival Time</mat-label>
-        <input matInput type="datetime-local" placeholder="date & time" formControlName="arrivalTime" required />
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Departure Time</mat-label>
-        <input matInput type="datetime-local" placeholder="date & time" formControlName="departureTime" required />
+        <input matInput placeholder="Ex. Toronto" formControlName="destinationLocation" />
       </mat-form-field>
     </div>
 
@@ -62,8 +51,9 @@
     <button mat-raised-button type="button" [mat-dialog-close]="false">
       Cancel
     </button>
-    <button mat-raised-button color="primary" type="submit" [disabled]="!flightForm.valid">
-      Save
+    <button mat-raised-button color="primary" type="submit" [disabled]="!flightSearchForm.valid">
+      Search
     </button>
   </div>
 </form>
+

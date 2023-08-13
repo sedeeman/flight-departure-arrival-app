@@ -12,7 +12,7 @@ import { FlightService } from '../services/flight.service';
 export class FlightStatusUpdateComponent {
   flightStatusUpdateForm: FormGroup;
 
-  flightStatus: string[] = ['arrival', 'departure', 'delay'];
+  flightStatus: string[] = ['SCHEDULED', 'ARRIVAL', 'DEPARTURE', 'DELAY'];
 
   constructor(
     private _formBuilder: FormBuilder,
@@ -34,7 +34,7 @@ export class FlightStatusUpdateComponent {
   onFormSubmit() {
     if (this.flightStatusUpdateForm.valid) {
       this._flightService
-        .updateFlightStatus(this.flightStatusUpdateForm.value)
+        .updateFlightStatus(this.flightStatusUpdateForm.value, this.data.flightId)
         .subscribe({
           next: (val: any) => {
             this._coreService.openSnackBar('Flight status updated!');

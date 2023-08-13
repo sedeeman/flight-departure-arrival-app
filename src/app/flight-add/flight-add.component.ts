@@ -16,6 +16,7 @@ import { CoreService } from 'src/core/core.service';
 })
 export class FlightAddComponent implements OnInit {
   flightForm: FormGroup;
+  flightStatusList: String[] = ['SCHEDULED','ARRIVAL','DEPARTURE','DELAY'];
 
   constructor(
     private _formBuilder: FormBuilder,
@@ -25,24 +26,27 @@ export class FlightAddComponent implements OnInit {
     private _coreService: CoreService
   ) {
     this.flightForm = this._formBuilder.group({
-      flightNumber: '',
-      scheduledTime: '',
-      flightType: '',
-      airportCode: '',
-      airportName: '',
-      location: '',
+      flightNumber:'',
+      originLocation:'',
+      destinationLocation:'',
+      flightType:'',
+      terminalGate:'',
+      arrivalTime:'',
+      departureTime:'',
+      status:'',
     });
   }
 
   ngOnInit(): void {
     this.flightForm.patchValue(this.data);
+    this.flightForm.controls['status'].setValue('SCHEDULED');
   }
 
   onFormSubmit() {
     if (this.flightForm.valid) {
       this._flightService.addFlight(this.flightForm.value).subscribe({
         next: (val: any) => {
-          this._coreService.openSnackBar('Flight added successfully');
+          this._coreService.openSnackBar(`Flight ${val.data.flightNumber} added successfully`);
           this._dialogRef.close(true);
         },
         error: (err: any) => {
