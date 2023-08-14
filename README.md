@@ -5,7 +5,8 @@ The Flight Arrival Departure App is a web application that facilitates various f
 
 ### High Level Design
 
-![image](https://github.com/sedeeman/flight-departure-arrival-app/assets/119731054/9c921d93-47fc-442f-b950-4d2f15dd0da4)
+![image](https://github.com/sedeeman/flight-departure-arrival-app/assets/119731054/464c5ea7-af8a-4d75-a252-9724194f304b)
+
 
 
 ### Features
